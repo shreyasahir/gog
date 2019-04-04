@@ -4,6 +4,7 @@ type node struct {
 	val   int
 	left  *node
 	right *node
+	hd    int
 }
 
 type tree struct {
@@ -65,4 +66,48 @@ func postOrder(n *node, f func(*node)) {
 		postOrder(n.right, f)
 		f(n)
 	}
+}
+
+func (t *tree) remove(val int) {
+	n := &node{val: val}
+	remove(t.root, n)
+}
+
+func remove(curr *node, n *node) *node {
+	if curr == nil {
+		return nil
+	}
+	if curr.val > n.val {
+		curr.left = remove(curr.left, n)
+		return curr
+	}
+	if curr.val < n.val {
+		curr.right = remove(curr.right, n)
+		return curr
+	}
+	if curr.left == nil && curr.right == nil {
+		curr = nil
+		return curr
+	}
+
+	if curr.left == nil {
+		curr = curr.right
+		return curr
+	}
+	if curr.right == nil {
+		curr = curr.left
+		return curr
+	}
+	rightMostLeft := curr.left
+	for {
+		if rightMostLeft != nil && rightMostLeft.left != nil {
+			rightMostLeft = rightMostLeft.left
+		} else {
+			break
+		}
+	}
+
+	curr.val = rightMostLeft.val
+	curr.right = remove(curr.right, curr)
+	return curr
 }
