@@ -33,10 +33,15 @@ func lcsPalindromedp(x string, m int, n int, hash *map[string]int) int {
 	}
 
 	key := string(m) + "|" + string(n)
-	if x[m] == x[n] {
+	if _, ok := (*hash)[key]; !ok {
 
+		if x[m] == x[n] {
+			(*hash)[key] = lcsPalindromedp(x, m+1, n-1, hash) + 2
+		}
+
+		(*hash)[key] = max(lcsPalindromedp(x, m, n-1, hash), lcsPalindromedp(x, m+1, n, hash))
 	}
-
+	return (*hash)[key]
 }
 
 func max(a, b int) int {
