@@ -1,0 +1,246 @@
+link list reverse
+coin sum
+public void printSums(int c1, int c2, int c3) {
+
+        Set<Integer> sums = new HashSet<>();
+        sums.add(0);
+
+        for(int sum = 1; sum <= 1000; sum++) {
+
+            if(sums.contains(sum - c1) || sums.contains(sum - c2) || sums.contains(sum - c3)) {
+                System.out.println(sum);
+                sums.add(sum);
+            }
+        }
+    }
+
+bit sum
+topological sort
+
+merge sorted array
+func merge(nums1 []int, m int, nums2 []int, n int) {
+	for n > 0 {
+		if m == 0 || nums2[n-1] > nums1[m-1] {
+			nums1[m+n-1] = nums2[n-1]
+			n--
+		} else {
+			nums1[m+n-1] = nums1[m-1]
+			m--
+		}
+	}
+}
+
+linklist odd even
+func oddEvenList(head *ListNode) *ListNode {
+    if head == nil {
+        return nil
+    }
+    odd := head
+    even := head.Next
+    evenHead := even
+    for even != nil && even.Next != nil {
+        odd.Next = even.Next
+        odd = odd.Next
+        even.Next = odd.Next
+        even = even.Next
+    }
+    odd.Next = evenHead
+    return head
+    
+}
+
+
+merge interval
+func RemoveIndex(s []Interval, index int) []Interval {
+	return append(s[:index], s[index+1:]...)
+}
+
+func merge(intervals []Interval) []Interval {
+	if len(intervals) <= 1 {
+		return intervals
+	}
+	sort.Sort(Intervals(intervals))
+	result := []Interval{intervals[0]}
+	for i := 1; i < len(intervals); i++ {
+		if intervals[i].Start <= result[len(result)-1].End {
+			result[len(result)-1].End = max(result[len(result)-1].End, intervals[i].End)
+			continue
+		}
+		result = append(result, intervals[i])
+	}
+	return result
+}
+
+type Intervals []Interval
+
+func (m Intervals) Less(i, j int) bool { return m[i].Start < m[j].Start }
+func (m Intervals) Swap(i, j int)      { m[i], m[j] = m[j], m[i] }
+func (m Intervals) Len() int           { return len(m) }
+
+func max(x, y int) int {
+	if x > y {
+		return x
+	}
+	return y
+}
+
+cube equal all number
+public class SumOfCubes {
+
+  public static void main(String[] args) {
+    StringBuilder output = new StringBuilder();
+    for (int i = 0; i < 10000; i++) {
+      if (getSumOfCubes(i) == i) {
+        output.append(i).append(System.lineSeparator());
+      }
+    }
+    System.out.println(output);
+  }
+
+  private static int getSumOfCubes(final int number) {
+    if (number == 0) {
+      return 0;
+    }
+    int lastDigit = number % 10;
+    return getSumOfCubes(number / 10) + lastDigit * lastDigit * lastDigit;
+  }
+}
+
+
+integer to words
+import "strings"
+var digitList = []string {"", "One", "Two", "Three",
+  "Four", "Five", "Six", "Seven", "Eight", "Nine"}
+
+var twoDigitList = []string {"Ten", "Eleven", "Twelve",
+  "Thirteen", "Fourteen", "Fifteen", 
+  "Sixteen", "Seventeen", "Eighteen", "Nineteen"}
+
+var tenList = []string {"Twenty", "Thirty",
+  "Forty", "Fifty", "Sixty",
+  "Seventy", "Eighty", "Ninety"}
+
+func sectionToWords(num int) string {
+  res := ""
+  if num >= 100 {
+    digit := int(num/100)
+    num = num%100
+    res = fmt.Sprintf("%s Hundred", digitList[digit])
+  }
+  if num >= 20 {
+    digit := int(num/10)
+    num = num%10
+    res = fmt.Sprintf("%s %s", res, tenList[digit-2])
+  }
+  if num >= 10 {
+    res = fmt.Sprintf("%s %s", res, twoDigitList[num-10])
+    num = 0
+  }
+  res = fmt.Sprintf("%s %s", res, digitList[num])
+  return strings.TrimSpace(res)
+}
+
+func numberToWords(num int) string {
+  if num == 0 { return "Zero" }
+  res := ""
+  for _, separator := range []string{"", "Thousand", "Million", "Billion"} {
+    if num == 0 { break }
+    section := num % 1000
+      fmt.Println("section",section)
+    num = int(num/1000)
+    if section != 0 {
+      res = fmt.Sprintf("%s %s %s", sectionToWords(section), separator, res)
+    }
+      fmt.Println("res",res)
+  }
+  return strings.TrimSpace(res)
+}
+
+
+add two large number
+def findSum(str1, str2):  
+      
+    # Before proceeding further,  
+    # make sure length of str2 is larger.  
+    if (len(str1) > len(str2)): 
+        t = str1; 
+        str1 = str2; 
+        str2 = t; 
+  
+    # Take an empty string for  
+    # storing result  
+    str = "";  
+  
+    # Calculate lenght of both string  
+    n1 = len(str1); 
+    n2 = len(str2);  
+  
+    # Reverse both of strings  
+    str1 = str1[::-1];  
+    str2 = str2[::-1];  
+  
+    carry = 0;  
+    for i in range(n1):  
+          
+        # Do school mathematics, compute  
+        # sum of current digits and carry  
+        sum = ((ord(str1[i]) - 48) + 
+              ((ord(str2[i]) - 48) + carry));  
+        str += chr(sum % 10 + 48);  
+  
+        # Calculate carry for next step  
+        carry = int(sum / 10);  
+  
+    # Add remaining digits of larger number  
+    for i in range(n1, n2):  
+        sum = ((ord(str2[i]) - 48) + carry);  
+        str += chr(sum % 10 + 48);  
+        carry = (int)(sum / 10);  
+  
+    # Add remaining carry  
+    if (carry):  
+        str += chr(carry + 48);  
+  
+    # reverse resultant string  
+    str = str[::-1];  
+  
+    return str; 
+
+
+    multiply large number
+    https://www.geeksforgeeks.org/multiply-large-numbers-represented-as-strings/
+
+
+generate large number
+    func largestNumber(nums []int) string {
+    if nums == nil || len(nums) == 0 {
+        return ""
+    }
+    if len(nums) == 1 {
+        n := strconv.Itoa(nums[0])
+        return n
+    }
+	num := make([]string, 0)
+	for i := 0; i < len(nums); i++ {
+		num = append(num, strconv.Itoa(nums[i]))
+	}
+	//fmt.Println("num", num)
+	sort.Sort(ByLength(num))
+	//fmt.Println("numafter sorting", num)
+
+	numStr := strings.Join(num, "")
+	//fmt.Println("numStr", numStr)
+    	if n, _ := strconv.Atoi(numStr); n == 0 {
+		return "0"
+	}
+
+	numStr = strings.TrimLeft(numStr, "0")
+	//fmt.Println("numStr trimleft", numStr)
+
+	return numStr
+}
+type ByLength []string
+
+func (a ByLength) Len() int           { return len(a) }
+func (a ByLength) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
+func (a ByLength) Less(i, j int) bool { return (a[i] + a[j]) > (a[j] + a[i]) }
