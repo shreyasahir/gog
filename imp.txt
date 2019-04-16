@@ -30,24 +30,7 @@ func merge(nums1 []int, m int, nums2 []int, n int) {
 	}
 }
 
-linklist odd even
-func oddEvenList(head *ListNode) *ListNode {
-    if head == nil {
-        return nil
-    }
-    odd := head
-    even := head.Next
-    evenHead := even
-    for even != nil && even.Next != nil {
-        odd.Next = even.Next
-        odd = odd.Next
-        even.Next = odd.Next
-        even = even.Next
-    }
-    odd.Next = evenHead
-    return head
-    
-}
+
 
 
 merge interval
@@ -244,3 +227,319 @@ type ByLength []string
 func (a ByLength) Len() int           { return len(a) }
 func (a ByLength) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
 func (a ByLength) Less(i, j int) bool { return (a[i] + a[j]) > (a[j] + a[i]) }
+
+
+
+link list
+func add(n1 *node, n2 *node) {
+	l3 := &list{}
+	var carry int
+	for n1 != nil || n2 != nil {
+
+		if n1 != nil {
+			carry += n1.val
+			n1 = n1.next
+		}
+
+		if n2 != nil {
+			carry += n2.val
+			n2 = n2.next
+		}
+		l3.addNode(carry % 10)
+		carry = carry / 10
+	}
+
+	if carry == 1 {
+		l3.addNode(1)
+	}
+	l3.print()
+}
+
+
+func (l *linklist) removeDuplicate() {
+	hash := make(map[int]int)
+	curr := l.head
+	var prev *node
+	for curr != nil {
+		if _, ok := hash[curr.value]; ok {
+			prev.next = curr.next
+		} else {
+			hash[curr.value] = 1
+			prev = curr
+		}
+		curr = curr.next
+	}
+
+}
+
+
+func (l *linklist) nthtolast(k int) {
+	//var prev,curr *node
+	prev := l.head
+	curr := l.head
+	for i := 1; i < k; i++ {
+		curr = curr.next
+		fmt.Println("i", i)
+	}
+	fmt.Println("curr", curr.value)
+	for curr.next != nil {
+		curr = curr.next
+		prev = prev.next
+	}
+	fmt.Println("nth is", prev.value)
+}
+
+func (l *linklist) deletenode(n *node) {
+	curr := l.head
+	for curr != nil {
+		if curr.value == 30 {
+			break
+		}
+		curr = curr.next
+	}
+	fmt.Println("curr", curr.value)
+	curr.value = curr.next.value
+	curr.next = curr.next.next
+}
+
+
+func powerSet(s []string) [][]string {
+	powerSetSize := math.Pow(2, float64(len(s)))
+	var result = make([][]string, 0, int(powerSetSize))
+	var index int
+	for index < int(powerSetSize) {
+		var subSet []string
+
+		for j, v := range s {
+			if index&(1<<uint(j)) > 0 {
+				subSet = append(subSet, string(v))
+			}
+		}
+		if len(subSet) == 4 {
+			result = append(result, subSet)
+		}
+		index++
+	}
+	return result
+}
+
+func paren(left, right int, s string) {
+	if left == 0 && right == 0 {
+		fmt.Println(s)
+	}
+	if left > right {
+		return
+	}
+	if left > 0 {
+		paren(left-1, right, s+"(")
+	}
+	if right > 0 {
+		paren(left, right-1, s+")")
+	}
+}
+
+func checkParanthesis(s []string) bool {
+	var stack []string
+
+	for _, v := range s {
+		if v == "[" || v == "(" || v == "{" {
+			stack = append(stack, v)
+		} else {
+			var u string
+			u, stack = stack[len(stack)-1], stack[:len(stack)-1]
+			if u == "(" && v != ")" || u == "[" && v != "]" || u == "{" && v != "}" {
+				fmt.Println("u & v", u, v)
+				return false
+			}
+		}
+	}
+	return true
+
+}
+
+func mergeKLists(lists []*ListNode) *ListNode {
+	var result []int
+	head := &ListNode{0, nil}
+	p := head
+	for i := 0; i < len(lists); i++ {
+		n := lists[i]
+		for n != nil {
+			result = append(result, n.Val)
+			n = n.Next
+		}
+	}
+	sort.Ints(result)
+	for i := 0; i < len(result); i++ {
+		p.Next = &ListNode{result[i], nil}
+		p = p.Next
+	}
+	return head.Next
+}
+
+linklist odd even
+func oddEvenList(head *ListNode) *ListNode {
+    if head == nil {
+        return nil
+    }
+    odd := head
+    even := head.Next
+    evenHead := even
+    for even != nil && even.Next != nil {
+        odd.Next = even.Next
+        odd = odd.Next
+        even.Next = odd.Next
+        even = even.Next
+    }
+    odd.Next = evenHead
+    return head
+    
+}
+
+func reverseList(head *ListNode) *ListNode {
+	var prev *ListNode
+	curr := head
+
+	for curr != nil {
+		next := curr.Next
+		curr.Next = prev
+		prev = curr
+		curr = next
+
+	}
+	return prev
+}
+
+
+
+func main() {
+	arr := []int{2, 3, 5}
+	target := 8
+	fmt.Println("combinationSum", combinationSum(arr, target))
+}
+
+func combinationSum(nums []int, target int) (result [][]int) {
+	sort.Ints(nums)
+	combinationSumHelper(nums, []int{}, target, 0, 0, &result)
+	return result
+}
+
+func combinationSumHelper(nums, subset []int, target, startIndex, sum int, result *[][]int) {
+	if sum == target {
+		*result = append(*result, append([]int{}, subset...))
+		return
+	}
+	for i := startIndex; i < len(nums) && sum+nums[i] <= target; i++ {
+		combinationSumHelper(nums, append(subset, nums[i]), target, i, sum+nums[i], result)
+	}
+}
+
+LRU 
+
+type node struct {
+	prev *node
+	next *node
+	key  int
+	val  int
+}
+
+type LRUCache struct {
+	data     map[int]*node
+	capacity int
+	head     *node
+	tail     *node
+}
+
+func Constructor(capacity int) LRUCache {
+	return LRUCache{
+		capacity: capacity,
+		data:     make(map[int]*node),
+	}
+}
+
+func (this *LRUCache) remove(n *node) {
+	if n == this.head {
+		this.head = n.next
+	}
+	if n == this.tail {
+		this.tail = n.prev
+	}
+
+	if n.next != nil {
+		n.next.prev = n.prev
+	}
+
+	if n.prev != nil {
+		n.prev.next = n.next
+	}
+}
+
+func (this *LRUCache) add(n *node) {
+	n.prev = nil
+	n.next = this.head
+	if n.next != nil {
+		n.next.prev = n
+	}
+	this.head = n
+	if this.tail == nil {
+		this.tail = n
+	}
+
+}
+
+func (this *LRUCache) Get(key int) int {
+	n, ok := this.data[key]
+	if !ok {
+		return -1
+	}
+	this.remove(n)
+	this.add(n)
+	return n.val
+}
+
+func (this *LRUCache) Put(key int, value int) {
+	n, ok := this.data[key]
+
+	if !ok {
+		n = &node{key: key, val: value}
+		this.data[key] = n
+	} else {
+		n.val = value
+		this.remove(n)
+	}
+	// fmt.Println("value of n", n)
+	// fmt.Println("value of this", this)
+
+	this.add(n)
+	if len(this.data) > this.capacity {
+		n = this.tail
+		if n != nil {
+			this.remove(n)
+			delete(this.data, n.key)
+		}
+	}
+}
+
+
+
+LCA 
+
+func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
+	if root == nil {
+		return nil
+	} else if root == p {
+		return p
+	} else if root == q {
+		return q
+	}
+
+	lc := lowestCommonAncestor(root.Left, p, q)
+	rc := lowestCommonAncestor(root.Right, p, q)
+
+	if lc != nil && rc != nil {
+		return root
+	} else if lc != nil {
+		return lc
+	} else {
+		return rc
+	}
+}
