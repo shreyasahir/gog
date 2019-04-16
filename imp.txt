@@ -543,3 +543,78 @@ func lowestCommonAncestor(root, p, q *TreeNode) *TreeNode {
 		return rc
 	}
 }
+
+
+func findDuplicate(nums []int) int {
+    tortoise := nums[0]
+	hare := nums[0]
+	for {
+		tortoise = nums[tortoise]
+		hare = nums[nums[hare]]
+
+		if hare == tortoise {
+			break
+		}
+	}
+	ptr1 := nums[0]
+	ptr2 := tortoise
+	for ptr1 != ptr2 {
+		ptr1 = nums[ptr1]
+		ptr2 = nums[ptr2]
+	}
+	return ptr1
+}
+
+def toDeci(str,base): 
+    llen = len(str) 
+    power = 1 #Initialize power of base 
+    num = 0     #Initialize result 
+  
+    # Decimal equivalent is str[len-1]*1 +  
+    # str[len-1]*base + str[len-1]*(base^2) + ...  
+    for i in range(llen - 1, -1, -1): 
+          
+        # A digit in input number must  
+        # be less than number's base  
+        if val(str[i]) >= base: 
+            print('Invalid Number') 
+            return -1
+        num += val(str[i]) * power 
+        power = power * base 
+    return num 
+
+
+    def reVal(num): 
+  
+    if (num >= 0 and num <= 9): 
+        return chr(num + ord('0')); 
+    else: 
+        return chr(num - 10 + ord('A')); 
+  
+# Utility function to reverse a string 
+def strev(str): 
+  
+    len = len(str); 
+    for i in range(int(len / 2)): 
+        temp = str[i]; 
+        str[i] = str[len - i - 1]; 
+        str[len - i - 1] = temp; 
+  
+# Function to convert a given decimal  
+# number to a base 'base' and 
+def fromDeci(res, base, inputNum): 
+  
+    index = 0; # Initialize index of result 
+  
+    # Convert input number is given base  
+    # by repeatedly dividing it by base  
+    # and taking remainder 
+    while (inputNum > 0): 
+        res+= reVal(inputNum % base); 
+        inputNum = int(inputNum / base); 
+  
+    # Reverse the result 
+    res = res[::-1]; 
+  
+    return res; 
+  
